@@ -173,21 +173,23 @@
       });
     }
 
-    async function buscarJogadores() {
-      try {
-        const response = await fetch('https://web-production-0a72.up.railway.app/parciais');
-        const data = await response.json();
-        document.getElementById('rodada').textContent = data.rodada;
+   async function buscarJogadores() {
+  try {
+    const response = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://api.cartola.globo.com/atletas/pontuados'));
+    const data = await response.json();
+    const cartolaData = JSON.parse(data.contents); // aqui está a mágica
 
-        jogadoresArrayGlobal = Object.values(data.atletas);
-        jogadoresArrayGlobal.sort((a, b) => b.pontuacao - a.pontuacao);
+    document.getElementById('rodada').textContent = cartolaData.rodada;
 
-        renderizarJogadores();
-        popularTimesNoFiltro();
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    jogadoresArrayGlobal = Object.values(cartolaData.atletas);
+    jogadoresArrayGlobal.sort((a, b) => b.pontuacao - a.pontuacao);
+
+    renderizarJogadores();
+    popularTimesNoFiltro();
+  } catch (error) {
+    console.error(error);
+  }
+}
 
     function popularTimesNoFiltro() {
       const select = document.getElementById('filtroTime');
